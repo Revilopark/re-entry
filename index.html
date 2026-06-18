@@ -956,6 +956,17 @@
     }
 
 
+
+    function toggleRights(card) {
+        const content = card.querySelector('.rights-content');
+        const chevron = card.querySelector('.rights-chevron');
+        content.classList.toggle('hidden');
+        if (content.classList.contains('hidden')) {
+            chevron.style.transform = 'rotate(0deg)';
+        } else {
+            chevron.style.transform = 'rotate(180deg)';
+        }
+    }
     function toggleChecklist(item) {
         item.classList.toggle('completed');
         const check = item.querySelector('.checklist-check');
