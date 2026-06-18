@@ -203,6 +203,23 @@
                     </div>
                 </div>
             </div>
+
+            <div class="mt-8">
+                <div class="card border-[#4A7C8C]/30">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#4A7C8C]/10 flex items-center justify-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4A7C8C" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-[#F5F3EF] font-medium mb-1">For Families & Loved Ones</h3>
+                            <p class="text-sm text-[#8B8680] mb-3">Supporting someone coming home? Here's how to help with housing, jobs, emotional support, and setting healthy boundaries.</p>
+                            <button onclick="openChat('family')" class="text-sm text-[#4A7C8C] hover:text-[#5A8F6E] font-medium flex items-center gap-1">
+                                Get Family Support Info →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="mt-8">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-light text-[#F5F3EF]">Featured Community</h2>
@@ -700,6 +717,9 @@
         { id: 16, text: "I'm getting out soon — what do I need?", icon: "file", topic: "prerelease" },
         { id: 17, text: "First 72 hours — help me plan", icon: "home", topic: "first72" },
         { id: 18, text: "How do I get Medicaid or health insurance?", icon: "health", topic: "health" },
+        { id: 19, text: "How can my family help me?", icon: "users", topic: "family" },
+        { id: 20, text: "Resume and interview tips", icon: "brief", topic: "job" },
+        { id: 21, text: "What to do first 72 hours out", icon: "home", topic: "first72" },
 ];
 
     const simulatedResponses = {
@@ -721,6 +741,9 @@
         "I'm getting out soon — what do I need?": "This is exactly the right time to start planning. The more you do before release, the smoother your first days will be. Here's your priority list: 1) Make sure TDOC is giving you at least 2 forms of ID (birth certificate + state ID). 2) Have a housing plan — even if it's just a temporary bed. Call Dismas House, TPOM, or Project Return NOW to reserve a spot. 3) Set up a phone number (Google Voice is free). 4) Apply for Medicaid before release (TennCare). 5) Have a ride lined up for release day. 6) Know your first appointment dates — PO, MAT clinic, job center. Want me to walk you through any of these in detail?",
         "First 72 hours — help me plan": "The first 72 hours are critical. Here's what matters most: DAY 1 — Get to your housing. Eat. Sleep. Check in with your PO if required. Make your first MAT appointment if you need it. DAY 2 — Go to the Social Security office or apply online. Get a phone. Apply for food stamps (SNAP). Visit an American Job Center. DAY 3 — Start your job search. Follow up on housing. Connect with a peer support group. If you don't have a bed yet, call 2-1-1 or go straight to a shelter. Don't try to do everything alone. Want me to help you build a specific day-by-day plan?",
         "How do I get Medicaid or health insurance?": "In Tennessee, you can apply for TennCare (Medicaid) online at TennCare Connect or in person. If you have a disability, SSI, or are low-income, you likely qualify. For people with substance use disorders, TennCare covers Medication-Assisted Treatment (MAT) — buprenorphine, methadone, naltrexone. You can also apply for ACA marketplace coverage, and if your income is low, you get subsidies. The key is applying BEFORE you need care, not after. Do you have any current health conditions, or are you mainly looking for coverage in case something comes up?",
+        "How can my family help me?": "Family support is one of the biggest predictors of successful reentry. But it's a two-way street. Here's what helps: 1) Patience — you need time to adjust, and they'll need time to adjust to you. 2) Housing — if they can offer a stable place, that's huge. But set boundaries so everyone has space. 3) Emotional support — not judgment. You don't need lectures, you need people who believe in you. 4) Practical help — rides to appointments, help with job applications, childcare. 5) Space to rebuild — let you handle things yourself when you're ready. Free Hearts has programs for families of incarcerated people. Sesame Street in Communities has resources for kids with incarcerated parents. Want help talking to your family about what you need?",
+        "Resume and interview tips": "Here's the real talk on jobs with a record: 1) Resume — lead with your skills, not your gaps. Use a functional resume format. List any training, certifications, or work you did inside. 2) Honesty — if they ask about your record, be brief and direct. 'I made mistakes, I served my time, and I'm ready to work.' 3) Interview prep — practice your answer to 'Tell me about yourself.' Focus on what you learned and what you bring. 4) Fair-chance employers — use Project Return, the Clean Slate directory, or American Job Centers. 5) Dress clean and professional — thrift stores have suits for cheap. 6) Follow up — send a thank-you text or email. Persevere and Lionheart have specific job readiness programs. Want help with your specific resume or interview prep?",
+        "What to do first 72 hours out": "The first 72 hours are about survival and stability. Here's your priority list: HOUR 1-6 — Get to your housing. Eat. Rest. Check in with your PO if required. Take any prescribed medications. HOUR 6-24 — Get a phone (Google Voice is free, or a cheap prepaid). Call your support people. Make your first MAT appointment if you need it. Apply for food stamps (SNAP) online. HOUR 24-48 — Visit an American Job Center. Apply for Medicaid. Go to the DMV if you need ID. Check in with your case manager. HOUR 48-72 — Start your job search. Follow up on housing. Connect with a peer support group. If you don't have a bed, call 2-1-1 or go to a shelter. The key is: don't try to do everything alone. Use the resources in this app. Want me to help you build a personalized day-by-day plan?",
 };
 
     let currentFilter = 'All';
