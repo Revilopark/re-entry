@@ -185,6 +185,8 @@
                 <button onclick="filterByTag('Residential')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Residential</button>
                 <button onclick="filterByTag('Health')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Health</button>
                 <button onclick="filterByTag('Legal')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Legal</button>
+                <button onclick="filterByTag('Health')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Health</button>
+                <button onclick="filterByTag('Sober Living')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Sober Living</button>
                 <button onclick="filterByTag('Veterans')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Veterans</button>
             </div>
             <div id="provider-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -211,6 +213,7 @@
                 <button onclick="filterResourceByCategory('Family')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Family</button>
                 <button onclick="filterResourceByCategory('Finance')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Finance</button>
                 <button onclick="filterResourceByCategory('Veterans')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Veterans</button>
+                <button onclick="filterResourceByCategory('Sober Living')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Sober Living</button>
             </div>
             <div id="resource-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
@@ -519,7 +522,13 @@
         { id: 10, name: "Lipscomb University LIFE Program", location: "Nashville, TN", services: "College Degrees, Seminary, Side-by-Side Instruction", description: "Associate's and Bachelor's degrees inside DJRC and Riverbend. First seminary program in a women's prison. Faith-based, side-by-side with traditional students.", contact: "lipscomb.edu/life", email: "", address: "Nashville, TN", tags: ["Education", "Women", "Faith-Based", "College"], verified: true },
         { id: 11, name: "Just City / Clean Slate Fund", location: "Memphis, TN", services: "Expungement, Legal Aid, Record Clearing", description: "Pays expungement fees and navigates the process. Tennessee 2-1-1 directory listing. Clean Slate State Fund.", contact: "justcity.org", email: "", address: "Memphis, TN", tags: ["Legal", "Expungement", "Memphis"], verified: true },
         { id: 12, name: "TN Office of Reentry (TOOR)", location: "Statewide, TN", services: "Job Centers, LEAP Program, Reentry Grants, Workforce", description: "State Office of Reentry under Dept of Labor. LEAP program goes inside facilities pre-release. Community Reentry Reinvestment Grants. American Job Centers.", contact: "tn.gov/workforce/reentrytn", email: "", address: "Statewide, TN", tags: ["Employment", "Government", "Statewide"], verified: true },
-    ];
+        { id: 13, name: "The Phoenix", location: "Nashville, TN", services: "Sober Community, Fitness, Social Support", description: "Free sober community for anyone with 48+ hours of sobriety. Group fitness, climbing, yoga, running, art. No membership, no dues, no commitment. Building community through physical activity.", contact: "thephoenix.org", email: "", address: "Nashville, TN", tags: ["Health", "Recovery", "Sober Living", "Fitness", "Featured"], verified: true },
+        { id: 14, name: "Oxford Houses of Tennessee", location: "Statewide, TN", services: "Sober Living, Self-Run, Peer Recovery", description: "Self-run, self-supported recovery houses. No affiliation with any treatment program. Democratically run by residents. Rent-based. 13+ houses in Greater Nashville. No maximum length of stay.", contact: "oxfordhouse.org", email: "", address: "Statewide, TN", tags: ["Sober Living", "Housing", "Recovery", "Statewide", "Featured"], verified: true },
+        { id: 15, name: "American Job Centers (TN)", location: "Statewide, TN", services: "Job Training, Career Counseling, Resume Help, Job Placement", description: "Tennessee Department of Labor and Workforce Development. Core services: career counseling, job search assistance, resume help, training program referrals. Also serves justice-involved individuals through the LEAP program.", contact: "tn.gov/workforce", email: "", address: "Statewide, TN", tags: ["Employment", "Workforce Development", "Training", "Statewide", "Featured"], verified: true },
+        { id: 16, name: "LIONHEART Foundation", location: "Nashville, TN", services: "Reentry, Emotional Literacy, Workforce Prep", description: "Founded by incarcerated peers. Focus on youth rehabilitation, emotional literacy, self-help through the Houses of Healing program. Residential reentry and workforce readiness.", contact: "lionheart.org", email: "", address: "Nashville, TN", tags: ["Employment", "Workforce Development", "Recovery", "Mental Health", "Featured"], verified: true },
+        { id: 17, name: "Banyan Labs (Persevere Partner)", location: "Memphis, TN", services: "Software Development, IT Apprenticeship, Job Placement", description: "Persevere employer partner. Social impact technology company employing justice-involved software developers. Full-time apprenticeship with pathway to permanent tech employment.", contact: "banyanlabs.com", email: "", address: "Memphis, TN", tags: ["Employment", "Tech", "Workforce Development", "Apprenticeship", "Featured"], verified: true },
+        { id: 18, name: "Prophet Foundation", location: "Memphis, TN", services: "Mobile Car Detailing, Workforce Development, Entrepreneurship", description: "One-on-one career coaching and reentry program. Mobile car detailing and enterprise expansion. Highly individual mentorship approach.", contact: "prophetmemphis.org", email: "", address: "Memphis, TN", tags: ["Employment", "Workforce Development", "Entrepreneurship", "Featured"], verified: true },
+];
 
     const resources = [
         { id: 1, title: "How to Get Your ID in Tennessee", category: "IDs & Documents", views: 1247, icon: "file" },
@@ -538,7 +547,13 @@
         { id: 14, title: "Veterans Benefits & VA Services", category: "Veterans", views: 445, icon: "vet" },
         { id: 15, title: "Occupational Licensing Reform", category: "Employment", views: 678, icon: "license" },
         { id: 16, title: "Substance Abuse Treatment (MAT)", category: "Health", views: 789, icon: "med" },
-    ];
+        { id: 17, title: "Finding Sober Living Housing", category: "Housing", views: 934, icon: "home" },
+        { id: 18, title: "Apprenticeship Programs in Tennessee", category: "Employment", views: 1123, icon: "brief" },
+        { id: 19, title: "Workforce Development & Job Training", category: "Employment", views: 1567, icon: "brief" },
+        { id: 20, title: "Sober Living Community Guide", category: "Health", views: 678, icon: "heart" },
+        { id: 21, title: "Getting a CDL or Commercial License", category: "Employment", views: 2345, icon: "license" },
+        { id: 22, title: "Trade Certifications & Apprenticeships", category: "Education", views: 987, icon: "grad" },
+];
 
     const chatOpeners = [
         { id: 1, text: "I need help finding housing", icon: "home", topic: "housing" },
@@ -551,7 +566,9 @@
         { id: 8, text: "My rights at work", icon: "scale", topic: "legal" },
         { id: 9, text: "Mental health support", icon: "health", topic: "health" },
         { id: 10, text: "Clearing my record", icon: "clear", topic: "legal" },
-    ];
+        { id: 11, text: "I need sober living or recovery support", icon: "heart", topic: "recovery" },
+        { id: 12, text: "Job training or apprenticeship info", icon: "brief", topic: "workforce" },
+];
 
     const simulatedResponses = {
         "I need help finding housing": "I hear you. Housing is one of the hardest parts of coming home, but you're not alone in this. Let me pull up the housing options in your area. In Nashville, you've got Dismas House (56 beds, men), Tennessee Prison Outreach Ministry (16-bed men's home), and if you're a woman, Thistle Farms has a two-year residential program. What's your situation — are you looking for something tonight, or do you have a few days to plan?",
@@ -564,7 +581,9 @@
         "My rights at work": "You have rights, and knowing them matters. The Fair Chance Act means federal employers and contractors can't ask about your record until after a conditional offer. Tennessee's Reentry Success Act of 2021 includes an employer liability shield — that means employers get protection when they hire people with records. You also qualify for the Work Opportunity Tax Credit (up to $9,600 for your employer). Are you dealing with a specific situation at work, or just getting informed?",
         "Mental health support": "Taking care of your mental health is just as important as everything else. In Tennessee, you can get connected to Certified Peer Recovery Specialists through the Department of Mental Health. The Phoenix offers free sober community fitness. Lionheart Foundation has emotional literacy programs. If you're dealing with substance use, Medication-Assisted Treatment (MAT) is available. Would you like help finding a therapist, peer support group, or treatment program near you?",
         "Clearing my record": "That's a big step toward rebuilding your life. In Tennessee, T.C.A. §40-32-101 covers expungement for dismissed/nollied charges and some convictions after 5+ years. Just City in Memphis runs the Clean Slate State Fund that pays expungement fees. The Legal Aid Society of Middle Tennessee also helps with this. The process is different depending on what charges you have. Want me to walk you through the basics?",
-    };
+        "I need sober living or recovery support": "I'm glad you're reaching out for this. Recovery housing can be a game-changer. In Tennessee, Oxford Houses are self-run, self-supported sober living homes — no treatment affiliation, just people supporting each other. There are 13+ in Greater Nashville and they're statewide. The Phoenix is another option — free sober community with fitness, climbing, yoga, and art. All you need is 48 hours of sobriety. There are also faith-based residential programs like Men of Valor and Thistle Farms. Are you looking for a men-only, women-only, or co-ed house? And do you need something immediately?",
+        "Job training or apprenticeship info": "Great question — there are more pathways than you might think. The state's American Job Centers have career counseling, job search help, and training referrals. They specifically serve justice-involved people through the LEAP program. If you're interested in tech, Persevere offers coding certifications (Network+, Security+, AWS) and Banyan Labs is a real tech company that hires justice-involved developers. Project Return has their 3-day Job Readiness Course with guaranteed placement. For trades, you can look into apprenticeships through the Department of Labor. What field are you interested in — tech, construction, trades, or something else?",
+};
 
     let currentFilter = 'All';
     let currentResourceFilter = 'All';
