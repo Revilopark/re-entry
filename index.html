@@ -68,6 +68,11 @@
             .nav-btn svg { width: 18px; height: 18px; }
             .card { padding: 1rem; }
         }
+        .checklist-item { transition: opacity 0.2s; }
+        .checklist-item.completed { opacity: 0.6; }
+        .checklist-item.completed span { text-decoration: line-through; color: var(--gray); }
+        .checklist-box { transition: all 0.2s; }
+        .checklist-item.completed .checklist-box { background: rgba(196, 169, 98, 0.2); border-color: var(--gold); }
         .fade-in { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
@@ -301,6 +306,75 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card mb-8">
+                <h2 class="text-lg font-medium text-[#F5F3EF] mb-4 flex items-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    My Checklist
+                </h2>
+                <div class="space-y-3" id="checklist-container">
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Get state ID and birth certificate</span>
+                    </div>
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Apply for Social Security card</span>
+                    </div>
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Find temporary housing or shelter</span>
+                    </div>
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Apply for Medicaid / TennCare</span>
+                    </div>
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Apply for SNAP / food assistance</span>
+                    </div>
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Get a phone number</span>
+                    </div>
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Visit American Job Center</span>
+                    </div>
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Open a bank account</span>
+                    </div>
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Connect with a peer support specialist</span>
+                    </div>
+                    <div class="checklist-item flex items-start gap-3 cursor-pointer" onclick="toggleChecklist(this)">
+                        <div class="w-5 h-5 rounded border border-[#C4A962]/40 flex items-center justify-center flex-shrink-0 mt-0.5 checklist-box">
+                            <svg class="checklist-check hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span class="text-sm text-[#F5F3EF]">Start expungement process if eligible</span>
+                    </div>
+                </div>
+                <p class="text-xs text-[#8B8680] mt-4" id="checklist-progress">0 of 10 completed</p>
             </div>
             <div class="card mb-8">
                 <h2 class="text-lg font-medium text-[#F5F3EF] mb-6 flex items-center gap-2">
@@ -881,6 +955,26 @@
         document.getElementById('chat-fab').classList.remove('hidden');
     }
 
+
+    function toggleChecklist(item) {
+        item.classList.toggle('completed');
+        const check = item.querySelector('.checklist-check');
+        check.classList.toggle('hidden');
+        updateChecklistProgress();
+    }
+
+    function updateChecklistProgress() {
+        const total = document.querySelectorAll('.checklist-item').length;
+        const completed = document.querySelectorAll('.checklist-item.completed').length;
+        const progress = document.getElementById('checklist-progress');
+        if (progress) {
+            progress.textContent = `${completed} of ${total} completed`;
+            if (completed === total) {
+                progress.textContent = 'All done! You're building a strong foundation.';
+                progress.className = 'text-xs text-[#5A8F6E] mt-4';
+            }
+        }
+    }
     // ===== INIT =====
     renderProviders(providers);
     renderFeaturedProviders();
