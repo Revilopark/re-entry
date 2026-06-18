@@ -161,6 +161,23 @@
                     <button onclick="openChat()" class="card text-center hover:border-[#C4A962]/40 cursor-pointer resource-card"><svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5A8F6E" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="text-sm text-[#F5F3EF] font-medium">Talk to Someone</span></button>
                 </div>
             </div>
+
+            <div class="mt-8">
+                <div class="card border-[#C4A962]/20">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#C4A962]/10 flex items-center justify-center gold">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-[#F5F3EF] font-medium mb-1">Transportation Help</h3>
+                            <p class="text-sm text-[#8B8680] mb-3">Getting to work, appointments, and housing without a car. Bus routes, rideshare vouchers, bike programs, and more.</p>
+                            <button onclick="openChat('transport')" class="text-sm text-[#C4A962] hover:text-[#D4B972] font-medium flex items-center gap-1">
+                                Find a Ride →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="mt-8">
                 <div class="card border-[#C4A962]/30">
                     <div class="flex items-start gap-4">
@@ -720,6 +737,8 @@
         { id: 19, text: "How can my family help me?", icon: "users", topic: "family" },
         { id: 20, text: "Resume and interview tips", icon: "brief", topic: "job" },
         { id: 21, text: "What to do first 72 hours out", icon: "home", topic: "first72" },
+        { id: 22, text: "I need a ride to work or appointments", icon: "truck", topic: "transport" },
+        { id: 23, text: "I'm still inside — what should I plan?", icon: "file", topic: "prerelease" },
 ];
 
     const simulatedResponses = {
@@ -744,6 +763,8 @@
         "How can my family help me?": "Family support is one of the biggest predictors of successful reentry. But it's a two-way street. Here's what helps: 1) Patience — you need time to adjust, and they'll need time to adjust to you. 2) Housing — if they can offer a stable place, that's huge. But set boundaries so everyone has space. 3) Emotional support — not judgment. You don't need lectures, you need people who believe in you. 4) Practical help — rides to appointments, help with job applications, childcare. 5) Space to rebuild — let you handle things yourself when you're ready. Free Hearts has programs for families of incarcerated people. Sesame Street in Communities has resources for kids with incarcerated parents. Want help talking to your family about what you need?",
         "Resume and interview tips": "Here's the real talk on jobs with a record: 1) Resume — lead with your skills, not your gaps. Use a functional resume format. List any training, certifications, or work you did inside. 2) Honesty — if they ask about your record, be brief and direct. 'I made mistakes, I served my time, and I'm ready to work.' 3) Interview prep — practice your answer to 'Tell me about yourself.' Focus on what you learned and what you bring. 4) Fair-chance employers — use Project Return, the Clean Slate directory, or American Job Centers. 5) Dress clean and professional — thrift stores have suits for cheap. 6) Follow up — send a thank-you text or email. Persevere and Lionheart have specific job readiness programs. Want help with your specific resume or interview prep?",
         "What to do first 72 hours out": "The first 72 hours are about survival and stability. Here's your priority list: HOUR 1-6 — Get to your housing. Eat. Rest. Check in with your PO if required. Take any prescribed medications. HOUR 6-24 — Get a phone (Google Voice is free, or a cheap prepaid). Call your support people. Make your first MAT appointment if you need it. Apply for food stamps (SNAP) online. HOUR 24-48 — Visit an American Job Center. Apply for Medicaid. Go to the DMV if you need ID. Check in with your case manager. HOUR 48-72 — Start your job search. Follow up on housing. Connect with a peer support group. If you don't have a bed, call 2-1-1 or go to a shelter. The key is: don't try to do everything alone. Use the resources in this app. Want me to help you build a personalized day-by-day plan?",
+        "I need a ride to work or appointments": "Transportation is a huge barrier, but there are options. In Nashville, WeGo Public Transit covers the city with buses. Some areas have reduced-fare programs for low-income riders. Project Return has a van fleet for getting to work. If you're in a rural area, Tennessee has Rural Transit Assistance Programs. Some employers provide transit benefits. Rideshare vouchers exist in some counties for job seekers. If you need a bike, some community programs provide free or cheap bicycles. For long-distance, Greyhound and Megabus are options. The key is planning your route the night before. What's your situation — daily commute, occasional appointments, or emergency rides?",
+        "I'm still inside — what should I plan?": "You're smart to start planning now. Here's what to do before release: 1) IDs — Confirm TDOC is giving you birth certificate + state ID. If not, request them NOW. 2) Housing — Call reentry providers from the inside. Dismas House, TPOM, Project Return, and Men of Valor all take pre-release referrals. 3) Health — Apply for TennCare (Medicaid) before release. Some facilities have enrollment events. 4) Job — Register with the American Job Center's LEAP program. Some facilities have job fairs inside. 5) Phone — Get a phone number ready (Google Voice is free). 6) Support — Identify 3 people you can call on day one. 7) Money — Open a bank account if possible, or have someone hold funds for you. 8) Documents — Make copies of your release papers, medical records, and any certificates. The more you do now, the smoother your first week will be. Want help with any specific part of this plan?",
 };
 
     let currentFilter = 'All';
