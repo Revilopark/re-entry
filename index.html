@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0D0D0D">
+    <meta name="description" content="Re-Entre - AI companion for reentry from incarceration. Tennessee pilot. 24/7 support for housing, jobs, IDs, family, health, education, and legal needs.">
     <title>Re-Entre - Your Companion Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -17,8 +19,10 @@
             --brown: #9B6B4F;
             --teal: #4A7C8C;
             --green: #5A8F6E;
+            --crisis: #B83232;
         }
-        body { background-color: var(--charcoal); color: var(--white); font-family: system-ui, -apple-system, sans-serif; }
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--charcoal); color: var(--white); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
         .gold { color: var(--gold); }
         .bg-gold { background-color: var(--gold); }
         .border-gold { border-color: rgba(196, 169, 98, 0.2); }
@@ -26,56 +30,73 @@
             background: linear-gradient(135deg, var(--black), var(--charcoal));
             border: 1px solid rgba(196, 169, 98, 0.2);
             border-radius: 0.75rem;
-            padding: 1.5rem;
-            transition: border-color 0.2s;
+            padding: 1.25rem;
+            transition: border-color 0.2s, transform 0.15s;
         }
+        .card:active { transform: scale(0.98); }
         .card:hover { border-color: rgba(196, 169, 98, 0.4); }
-        .nav-btn { padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.875rem; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+        .nav-btn { padding: 0.5rem 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; min-width: 3.5rem; }
         .nav-btn.active { color: var(--gold); background: rgba(196, 169, 98, 0.1); }
         .nav-btn:not(.active) { color: var(--gray); }
         .nav-btn:not(.active):hover { color: var(--white); }
-        .chat-bubble-bot { background: var(--black); border: 1px solid rgba(196, 169, 98, 0.2); border-radius: 0.75rem; padding: 0.75rem; max-width: 80%; }
-        .chat-bubble-user { background: var(--gold); color: var(--charcoal); border-radius: 0.75rem; padding: 0.75rem; max-width: 80%; }
+        .chat-bubble-bot { background: var(--black); border: 1px solid rgba(196, 169, 98, 0.2); border-radius: 0.75rem; padding: 0.875rem; max-width: 85%; font-size: 1rem; line-height: 1.5; }
+        .chat-bubble-user { background: var(--gold); color: var(--charcoal); border-radius: 0.75rem; padding: 0.875rem; max-width: 85%; font-size: 1rem; font-weight: 500; }
         .typing-dot { width: 0.5rem; height: 0.5rem; background: var(--gold); border-radius: 50%; animation: bounce 1s infinite; }
         .typing-dot:nth-child(2) { animation-delay: 0.1s; }
         .typing-dot:nth-child(3) { animation-delay: 0.2s; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-0.5rem); } }
-        .progress-bar { height: 0.5rem; background: var(--charcoal); border-radius: 9999px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--brown)); border-radius: 9999px; }
+        .progress-bar { height: 0.625rem; background: var(--charcoal); border-radius: 9999px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--brown)); border-radius: 9999px; transition: width 0.5s ease; }
         .stage-completed { border-color: rgba(90, 143, 110, 0.3); background: rgba(90, 143, 110, 0.05); }
         .stage-active { border-color: rgba(196, 169, 98, 0.3); background: rgba(196, 169, 98, 0.05); }
         .hidden { display: none !important; }
         .screen { display: none; padding-bottom: 6rem; }
         .screen.active { display: block; }
-        .scroll-hide::-webkit-scrollbar { display: none; }
-        .fab { position: fixed; bottom: 5.5rem; right: 1rem; width: 3.5rem; height: 3.5rem; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; z-index: 40; }
+        .fab { position: fixed; bottom: 5.5rem; right: 1rem; width: 3.5rem; height: 3.5rem; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; z-index: 40; transition: transform 0.15s; }
+        .fab:active { transform: scale(0.92); }
         .chat-screen { position: fixed; inset: 0; background: var(--charcoal); z-index: 50; display: none; flex-direction: column; }
         .chat-screen.active { display: flex; }
-        .opener-btn { background: var(--black); border: 1px solid rgba(196, 169, 98, 0.2); border-radius: 0.5rem; padding: 0.5rem 0.75rem; font-size: 0.75rem; color: var(--gray); display: flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: all 0.2s; }
+        .opener-btn { background: var(--black); border: 1px solid rgba(196, 169, 98, 0.2); border-radius: 0.5rem; padding: 0.625rem 0.875rem; font-size: 0.8125rem; color: var(--gray); display: flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
         .opener-btn:hover { color: var(--white); background: rgba(196, 169, 98, 0.1); }
+        .opener-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .crisis-btn { background: var(--crisis); color: white; border: none; border-radius: 0.5rem; padding: 0.75rem 1rem; font-size: 0.875rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: all 0.2s; }
+        .crisis-btn:hover { background: #d44848; }
+        .resource-card { transition: all 0.2s; }
+        .resource-card:hover { border-color: rgba(196, 169, 98, 0.4); transform: translateY(-2px); }
+        @media (max-width: 640px) {
+            .nav-btn { font-size: 0.625rem; padding: 0.375rem 0.5rem; }
+            .nav-btn svg { width: 18px; height: 18px; }
+            .card { padding: 1rem; }
+        }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
     </style>
 </head>
 <body class="min-h-screen">
+    <!-- Skip to content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-[#C4A962] focus:text-[#0D0D0D] focus:px-4 focus:py-2 focus:rounded">Skip to content</a>
+
     <!-- Navigation -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-[#0D0D0D] to-[#1A1A1A] border-t border-[#C4A962]/20 px-2 py-2 z-50">
+    <nav class="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-[#0D0D0D] to-[#1A1A1A] border-t border-[#C4A962]/20 px-2 py-2 z-50" role="navigation" aria-label="Main navigation">
         <div class="max-w-6xl mx-auto flex justify-around">
-            <button class="nav-btn active" onclick="navigate('home')">
+            <button class="nav-btn active" onclick="navigate('home')" aria-label="Home" aria-current="page">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 <span class="text-xs font-medium">Home</span>
             </button>
-            <button class="nav-btn" onclick="navigate('community')">
+            <button class="nav-btn" onclick="navigate('community')" aria-label="Community Network">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 <span class="text-xs font-medium">Community</span>
             </button>
-            <button class="nav-btn" onclick="navigate('resources')">
+            <button class="nav-btn" onclick="navigate('resources')" aria-label="Resource Library">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                 <span class="text-xs font-medium">Resources</span>
             </button>
-            <button class="nav-btn" onclick="navigate('journey')">
+            <button class="nav-btn" onclick="navigate('journey')" aria-label="My Journey">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                 <span class="text-xs font-medium">Journey</span>
             </button>
-            <button class="nav-btn" onclick="navigate('me')">
+            <button class="nav-btn" onclick="navigate('me')" aria-label="My Profile">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 <span class="text-xs font-medium">Me</span>
             </button>
@@ -84,9 +105,9 @@
 
     <!-- HOME SCREEN -->
     <div id="screen-home" class="screen active">
-        <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+        <section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden" id="main-content">
             <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
-                <div class="mb-8">
+                <div class="mb-6">
                     <h1 class="text-5xl md:text-7xl font-light tracking-tight text-[#F5F3EF]">Re<span class="gold">-Entre</span></h1>
                     <div class="flex items-center justify-center gap-3 mt-3">
                         <div class="h-px w-12 bg-gradient-to-r from-transparent to-[#C4A962]"></div>
@@ -94,42 +115,53 @@
                         <div class="h-px w-12 bg-gradient-to-l from-transparent to-[#C4A962]"></div>
                     </div>
                 </div>
-                <p class="text-xl md:text-2xl text-[#8B8680] font-light leading-relaxed mb-8 max-w-2xl mx-auto">
+                <p class="text-lg md:text-xl text-[#8B8680] font-light leading-relaxed mb-6 max-w-2xl mx-auto">
                     An AI companion that walks with you — from the day before release through every step of <span class="gold">coming home</span>.
                 </p>
-                <div class="flex justify-center gap-8 md:gap-16 mb-12">
-                    <div class="text-center"><div class="text-3xl md:text-4xl font-light gold">7</div><div class="text-xs text-[#8B8680] tracking-wide uppercase">Life Domains</div></div>
-                    <div class="text-center"><div class="text-3xl md:text-4xl font-light gold">24/7</div><div class="text-xs text-[#8B8680] tracking-wide uppercase">Always On</div></div>
-                    <div class="text-center"><div class="text-3xl md:text-4xl font-light gold">TN</div><div class="text-xs text-[#8B8680] tracking-wide uppercase">Pilot Home</div></div>
+                <div class="flex justify-center gap-6 md:gap-12 mb-8">
+                    <div class="text-center"><div class="text-2xl md:text-4xl font-light gold">7</div><div class="text-xs text-[#8B8680] tracking-wide uppercase mt-1">Life Domains</div></div>
+                    <div class="text-center"><div class="text-2xl md:text-4xl font-light gold">24/7</div><div class="text-xs text-[#8B8680] tracking-wide uppercase mt-1">Always On</div></div>
+                    <div class="text-center"><div class="text-2xl md:text-4xl font-light gold">TN</div><div class="text-xs text-[#8B8680] tracking-wide uppercase mt-1">Pilot Home</div></div>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button onclick="openChat()" class="px-8 py-4 bg-gold text-[#0D0D0D] font-medium rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                    <button onclick="openChat()" class="px-8 py-4 bg-gold text-[#0D0D0D] font-medium rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2 text-lg">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                         Talk to Re-Entre
                     </button>
-                    <button onclick="navigate('resources')" class="px-8 py-4 border border-[#C4A962]/30 text-[#C4A962] font-medium rounded-lg hover:bg-[#C4A962]/10 transition-colors flex items-center justify-center gap-2">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                    <button onclick="navigate('resources')" class="px-8 py-4 border border-[#C4A962]/30 text-[#C4A962] font-medium rounded-lg hover:bg-[#C4A962]/10 transition-colors flex items-center justify-center gap-2 text-lg">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
                         Explore Resources
                     </button>
                 </div>
+                <button onclick="openCrisis()" class="crisis-btn mx-auto inline-flex">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    I Need Help Now
+                </button>
             </div>
         </section>
 
         <div class="max-w-6xl mx-auto px-4 pb-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-                <div class="card text-center"><svg class="mx-auto mb-2 gold" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="text-2xl font-light text-[#F5F3EF]">95</div><div class="text-xs text-[#8B8680]">Days Home</div></div>
-                <div class="card text-center"><svg class="mx-auto mb-2 gold" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div class="text-2xl font-light text-[#F5F3EF]">4</div><div class="text-xs text-[#8B8680]">Goals Done</div></div>
-                <div class="card text-center"><svg class="mx-auto mb-2 gold" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><div class="text-2xl font-light text-[#F5F3EF]">23</div><div class="text-xs text-[#8B8680]">Resources</div></div>
-                <div class="card text-center"><svg class="mx-auto mb-2 gold" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="text-2xl font-light text-[#F5F3EF]">7</div><div class="text-xs text-[#8B8680]">Connections</div></div>
+                <div class="card text-center"><svg class="mx-auto mb-2 gold" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="text-2xl font-light text-[#F5F3EF]">95</div><div class="text-xs text-[#8B8680] mt-1">Days Home</div></div>
+                <div class="card text-center"><svg class="mx-auto mb-2 gold" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div class="text-2xl font-light text-[#F5F3EF]">4</div><div class="text-xs text-[#8B8680] mt-1">Goals Done</div></div>
+                <div class="card text-center"><svg class="mx-auto mb-2 gold" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><div class="text-2xl font-light text-[#F5F3EF]">23</div><div class="text-xs text-[#8B8680] mt-1">Resources</div></div>
+                <div class="card text-center"><svg class="mx-auto mb-2 gold" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="text-2xl font-light text-[#F5F3EF]">7</div><div class="text-xs text-[#8B8680] mt-1">Connections</div></div>
             </div>
             <div class="mt-8">
                 <h2 class="text-xl font-light text-[#F5F3EF] mb-4">Quick Actions</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <button onclick="openChat()" class="card text-center hover:border-[#C4A962]/40 cursor-pointer"><svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="text-sm text-[#F5F3EF]">Find Housing</span></button>
-                    <button onclick="openChat()" class="card text-center hover:border-[#C4A962]/40 cursor-pointer"><svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9B6B4F" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="text-sm text-[#F5F3EF]">Get an ID</span></button>
-                    <button onclick="openChat()" class="card text-center hover:border-[#C4A962]/40 cursor-pointer"><svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4A7C8C" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span class="text-sm text-[#F5F3EF]">Find a Job</span></button>
-                    <button onclick="openChat()" class="card text-center hover:border-[#C4A962]/40 cursor-pointer"><svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5A8F6E" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="text-sm text-[#F5F3EF]">Talk to Someone</span></button>
+                    <button onclick="openChat('housing')" class="card text-center hover:border-[#C4A962]/40 cursor-pointer resource-card"><svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="text-sm text-[#F5F3EF] font-medium">Find Housing</span></button>
+                    <button onclick="openChat('id')" class="card text-center hover:border-[#C4A962]/40 cursor-pointer resource-card"><svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9B6B4F" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span class="text-sm text-[#F5F3EF] font-medium">Get an ID</span></button>
+                    <button onclick="openChat('job')" class="card text-center hover:border-[#C4A962]/40 cursor-pointer resource-card"><svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4A7C8C" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span class="text-sm text-[#F5F3EF] font-medium">Find a Job</span></button>
+                    <button onclick="openChat()" class="card text-center hover:border-[#C4A962]/40 cursor-pointer resource-card"><svg class="mx-auto mb-2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5A8F6E" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="text-sm text-[#F5F3EF] font-medium">Talk to Someone</span></button>
                 </div>
+            </div>
+            <div class="mt-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-light text-[#F5F3EF]">Featured Community</h2>
+                    <button onclick="navigate('community')" class="text-sm text-[#C4A962] hover:text-[#D4B972]">View All →</button>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4" id="featured-providers"></div>
             </div>
         </div>
     </div>
@@ -138,18 +170,22 @@
     <div id="screen-community" class="screen">
         <div class="max-w-6xl mx-auto px-4 py-8">
             <h1 class="text-2xl font-light text-[#F5F3EF] mb-2">Community Network</h1>
-            <p class="text-[#8B8680] mb-8">8 reentry organizations in Tennessee</p>
+            <p class="text-[#8B8680] mb-8" id="provider-count">Loading organizations...</p>
             <div class="relative mb-6">
                 <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-[#8B8680]" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="provider-search" placeholder="Search organizations..." class="w-full pl-12 pr-4 py-3 bg-[#1A1A1A] border border-[#C4A962]/20 rounded-lg text-[#F5F3EF] placeholder-[#8B8680] focus:outline-none focus:border-[#C4A962]/50" onkeyup="filterProviders()">
+                <input type="text" id="provider-search" placeholder="Search organizations, services, or locations..." class="w-full pl-12 pr-4 py-3 bg-[#1A1A1A] border border-[#C4A962]/20 rounded-lg text-[#F5F3EF] placeholder-[#8B8680] focus:outline-none focus:border-[#C4A962]/50 text-base" onkeyup="filterProviders()">
             </div>
             <div class="flex flex-wrap gap-2 mb-6" id="provider-filters">
-                <button onclick="filterByTag('All')" class="px-4 py-2 rounded-full text-sm bg-[#C4A962] text-[#0D0D0D]">All</button>
+                <button onclick="filterByTag('All')" class="px-4 py-2 rounded-full text-sm bg-[#C4A962] text-[#0D0D0D] font-medium">All</button>
                 <button onclick="filterByTag('Housing')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Housing</button>
                 <button onclick="filterByTag('Employment')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Employment</button>
+                <button onclick="filterByTag('Education')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Education</button>
                 <button onclick="filterByTag('Women')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Women</button>
                 <button onclick="filterByTag('Faith-Based')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Faith-Based</button>
                 <button onclick="filterByTag('Residential')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Residential</button>
+                <button onclick="filterByTag('Health')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Health</button>
+                <button onclick="filterByTag('Legal')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Legal</button>
+                <button onclick="filterByTag('Veterans')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Veterans</button>
             </div>
             <div id="provider-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
@@ -162,16 +198,19 @@
             <p class="text-[#8B8680] mb-8">Guides and directories for every step home</p>
             <div class="relative mb-6">
                 <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-[#8B8680]" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="resource-search" placeholder="Search resources..." class="w-full pl-12 pr-4 py-3 bg-[#1A1A1A] border border-[#C4A962]/20 rounded-lg text-[#F5F3EF] placeholder-[#8B8680] focus:outline-none focus:border-[#C4A962]/50" onkeyup="filterResources()">
+                <input type="text" id="resource-search" placeholder="Search resources..." class="w-full pl-12 pr-4 py-3 bg-[#1A1A1A] border border-[#C4A962]/20 rounded-lg text-[#F5F3EF] placeholder-[#8B8680] focus:outline-none focus:border-[#C4A962]/50 text-base" onkeyup="filterResources()">
             </div>
             <div class="flex flex-wrap gap-2 mb-6">
-                <button onclick="filterResourceByCategory('All')" class="px-4 py-2 rounded-full text-sm bg-[#C4A962] text-[#0D0D0D]">All</button>
+                <button onclick="filterResourceByCategory('All')" class="px-4 py-2 rounded-full text-sm bg-[#C4A962] text-[#0D0D0D] font-medium">All</button>
                 <button onclick="filterResourceByCategory('IDs & Documents')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">IDs</button>
                 <button onclick="filterResourceByCategory('Housing')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Housing</button>
                 <button onclick="filterResourceByCategory('Employment')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Jobs</button>
                 <button onclick="filterResourceByCategory('Education')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Education</button>
                 <button onclick="filterResourceByCategory('Health')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Health</button>
                 <button onclick="filterResourceByCategory('Legal')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Legal</button>
+                <button onclick="filterResourceByCategory('Family')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Family</button>
+                <button onclick="filterResourceByCategory('Finance')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Finance</button>
+                <button onclick="filterResourceByCategory('Veterans')" class="px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]">Veterans</button>
             </div>
             <div id="resource-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
@@ -223,30 +262,30 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
                     Life Domains
                 </h2>
-                <div class="space-y-4">
+                <div class="space-y-5">
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-full bg-[#C4A962]/10 flex items-center justify-center gold"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF]">Housing</span><span class="text-xs text-[#8B8680]">In Progress</span></div><div class="progress-bar"><div class="progress-fill" style="width: 35%"></div></div></div><span class="text-sm gold w-12 text-right">35%</span>
+                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF] font-medium">Housing</span><span class="text-xs text-[#8B8680]">In Progress</span></div><div class="progress-bar"><div class="progress-fill" style="width: 35%"></div></div></div><span class="text-sm gold w-12 text-right font-medium">35%</span>
                     </div>
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-full bg-[#C4A962]/10 flex items-center justify-center gold"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF]">Employment</span><span class="text-xs text-[#8B8680]">Active Search</span></div><div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div></div><span class="text-sm gold w-12 text-right">60%</span>
+                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF] font-medium">Employment</span><span class="text-xs text-[#8B8680]">Active Search</span></div><div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div></div><span class="text-sm gold w-12 text-right font-medium">60%</span>
                     </div>
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-full bg-[#C4A962]/10 flex items-center justify-center gold"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
-                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF]">Education</span><span class="text-xs text-[#8B8680]">Exploring</span></div><div class="progress-bar"><div class="progress-fill" style="width: 45%"></div></div></div><span class="text-sm gold w-12 text-right">45%</span>
+                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF] font-medium">Education</span><span class="text-xs text-[#8B8680]">Exploring</span></div><div class="progress-bar"><div class="progress-fill" style="width: 45%"></div></div></div><span class="text-sm gold w-12 text-right font-medium">45%</span>
                     </div>
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-full bg-[#C4A962]/10 flex items-center justify-center gold"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF]">Health</span><span class="text-xs text-[#8B8680]">On Track</span></div><div class="progress-bar"><div class="progress-fill" style="width: 70%"></div></div></div><span class="text-sm gold w-12 text-right">70%</span>
+                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF] font-medium">Health</span><span class="text-xs text-[#8B8680]">On Track</span></div><div class="progress-bar"><div class="progress-fill" style="width: 70%"></div></div></div><span class="text-sm gold w-12 text-right font-medium">70%</span>
                     </div>
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-full bg-[#C4A962]/10 flex items-center justify-center gold"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF]">Family</span><span class="text-xs text-[#8B8680]">Starting</span></div><div class="progress-bar"><div class="progress-fill" style="width: 25%"></div></div></div><span class="text-sm gold w-12 text-right">25%</span>
+                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF] font-medium">Family</span><span class="text-xs text-[#8B8680]">Starting</span></div><div class="progress-bar"><div class="progress-fill" style="width: 25%"></div></div></div><span class="text-sm gold w-12 text-right font-medium">25%</span>
                     </div>
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 rounded-full bg-[#C4A962]/10 flex items-center justify-center gold"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF]">Legal</span><span class="text-xs text-[#8B8680]">Nearly Done</span></div><div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div></div><span class="text-sm gold w-12 text-right">80%</span>
+                        <div class="flex-1"><div class="flex items-center justify-between mb-1"><span class="text-sm text-[#F5F3EF] font-medium">Legal</span><span class="text-xs text-[#8B8680]">Nearly Done</span></div><div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div></div><span class="text-sm gold w-12 text-right font-medium">80%</span>
                     </div>
                 </div>
             </div>
@@ -266,12 +305,12 @@
         <div class="max-w-6xl mx-auto px-4 py-8">
             <h1 class="text-2xl font-light text-[#F5F3EF] mb-2">My Profile</h1>
             <p class="text-[#8B8680] mb-8">Your story, your strengths, your journey</p>
-            <div class="card p-8 mb-6">
+            <div class="card p-6 mb-6">
                 <div class="flex items-start gap-6">
-                    <div class="w-24 h-24 rounded-full bg-gradient-to-br from-[#9B6B4F] to-[#4A7C8C] flex items-center justify-center text-[#F5F3EF] text-3xl font-light">M</div>
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[#9B6B4F] to-[#4A7C8C] flex items-center justify-center text-[#F5F3EF] text-2xl md:text-3xl font-light">M</div>
                     <div class="flex-1">
-                        <h1 class="text-2xl font-medium text-[#F5F3EF] mb-1">Marcus</h1>
-                        <p class="text-[#8B8680] mb-4">Released 3/15/2026 · Early Stabilization</p>
+                        <h1 class="text-xl md:text-2xl font-medium text-[#F5F3EF] mb-1">Marcus</h1>
+                        <p class="text-[#8B8680] mb-3 text-sm md:text-base">Released 3/15/2026 · Early Stabilization</p>
                         <p class="text-[#F5F3EF]/80 text-sm leading-relaxed">Building a new foundation. Father of two. Served 8 years. Ready to work, ready to grow, ready to come home fully.</p>
                     </div>
                 </div>
@@ -282,9 +321,10 @@
                     Top Goals
                 </h2>
                 <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1.5 bg-[#C4A962]/10 text-[#C4A962] text-sm rounded-lg">Secure Housing</span>
-                    <span class="px-3 py-1.5 bg-[#C4A962]/10 text-[#C4A962] text-sm rounded-lg">Find Employment</span>
-                    <span class="px-3 py-1.5 bg-[#C4A962]/10 text-[#C4A962] text-sm rounded-lg">Reconnect with Family</span>
+                    <span class="px-3 py-1.5 bg-[#C4A962]/10 text-[#C4A962] text-sm rounded-lg font-medium">Secure Housing</span>
+                    <span class="px-3 py-1.5 bg-[#C4A962]/10 text-[#C4A962] text-sm rounded-lg font-medium">Find Employment</span>
+                    <span class="px-3 py-1.5 bg-[#C4A962]/10 text-[#C4A962] text-sm rounded-lg font-medium">Reconnect with Family</span>
+                    <span class="px-3 py-1.5 bg-[#C4A962]/10 text-[#C4A962] text-sm rounded-lg font-medium">Get My CDL</span>
                 </div>
             </div>
             <div class="card mb-6">
@@ -294,34 +334,34 @@
                 </h2>
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                     <div class="text-center">
-                        <div class="relative w-20 h-20 mx-auto mb-2">
+                        <div class="relative w-16 h-16 md:w-20 md:h-20 mx-auto mb-2">
                             <svg class="w-full h-full" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="2" opacity="0.2"/><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="3" stroke-dasharray="175.4 283" stroke-linecap="round" transform="rotate(-90 50 50)"/><text x="50" y="50" text-anchor="middle" dy="0.3em" fill="#C4A962" font-size="20" font-weight="300">6.2</text></svg>
                         </div>
-                        <h3 class="text-[#F5F3EF] text-sm">Stability</h3>
+                        <h3 class="text-[#F5F3EF] text-sm font-medium">Stability</h3>
                     </div>
                     <div class="text-center">
-                        <div class="relative w-20 h-20 mx-auto mb-2">
+                        <div class="relative w-16 h-16 md:w-20 md:h-20 mx-auto mb-2">
                             <svg class="w-full h-full" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="2" opacity="0.2"/><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="3" stroke-dasharray="220.7 283" stroke-linecap="round" transform="rotate(-90 50 50)"/><text x="50" y="50" text-anchor="middle" dy="0.3em" fill="#C4A962" font-size="20" font-weight="300">7.8</text></svg>
                         </div>
-                        <h3 class="text-[#F5F3EF] text-sm">Hope</h3>
+                        <h3 class="text-[#F5F3EF] text-sm font-medium">Hope</h3>
                     </div>
                     <div class="text-center">
-                        <div class="relative w-20 h-20 mx-auto mb-2">
+                        <div class="relative w-16 h-16 md:w-20 md:h-20 mx-auto mb-2">
                             <svg class="w-full h-full" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="2" opacity="0.2"/><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="3" stroke-dasharray="152.8 283" stroke-linecap="round" transform="rotate(-90 50 50)"/><text x="50" y="50" text-anchor="middle" dy="0.3em" fill="#C4A962" font-size="20" font-weight="300">5.4</text></svg>
                         </div>
-                        <h3 class="text-[#F5F3EF] text-sm">Connection</h3>
+                        <h3 class="text-[#F5F3EF] text-sm font-medium">Connection</h3>
                     </div>
                     <div class="text-center">
-                        <div class="relative w-20 h-20 mx-auto mb-2">
+                        <div class="relative w-16 h-16 md:w-20 md:h-20 mx-auto mb-2">
                             <svg class="w-full h-full" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="2" opacity="0.2"/><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="3" stroke-dasharray="192.4 283" stroke-linecap="round" transform="rotate(-90 50 50)"/><text x="50" y="50" text-anchor="middle" dy="0.3em" fill="#C4A962" font-size="20" font-weight="300">6.8</text></svg>
                         </div>
-                        <h3 class="text-[#F5F3EF] text-sm">Skills</h3>
+                        <h3 class="text-[#F5F3EF] text-sm font-medium">Skills</h3>
                     </div>
                     <div class="text-center">
-                        <div class="relative w-20 h-20 mx-auto mb-2">
+                        <div class="relative w-16 h-16 md:w-20 md:h-20 mx-auto mb-2">
                             <svg class="w-full h-full" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="2" opacity="0.2"/><circle cx="50" cy="50" r="45" fill="none" stroke="#C4A962" stroke-width="3" stroke-dasharray="200.9 283" stroke-linecap="round" transform="rotate(-90 50 50)"/><text x="50" y="50" text-anchor="middle" dy="0.3em" fill="#C4A962" font-size="20" font-weight="300">7.1</text></svg>
                         </div>
-                        <h3 class="text-[#F5F3EF] text-sm">Health</h3>
+                        <h3 class="text-[#F5F3EF] text-sm font-medium">Health</h3>
                     </div>
                 </div>
             </div>
@@ -331,25 +371,116 @@
                     Tags & Identities
                 </h2>
                 <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1.5 bg-[#4A7C8C]/10 text-[#4A7C8C] text-sm rounded-lg">Veteran</span>
-                    <span class="px-3 py-1.5 bg-[#4A7C8C]/10 text-[#4A7C8C] text-sm rounded-lg">Parent</span>
-                    <span class="px-3 py-1.5 bg-[#4A7C8C]/10 text-[#4A7C8C] text-sm rounded-lg">Job-Ready</span>
-                    <span class="px-3 py-1.5 bg-[#4A7C8C]/10 text-[#4A7C8C] text-sm rounded-lg">Needs Housing</span>
+                    <span class="px-3 py-1.5 bg-[#4A7C8C]/10 text-[#4A7C8C] text-sm rounded-lg font-medium">Veteran</span>
+                    <span class="px-3 py-1.5 bg-[#4A7C8C]/10 text-[#4A7C8C] text-sm rounded-lg font-medium">Parent</span>
+                    <span class="px-3 py-1.5 bg-[#4A7C8C]/10 text-[#4A7C8C] text-sm rounded-lg font-medium">Job-Ready</span>
+                    <span class="px-3 py-1.5 bg-[#4A7C8C]/10 text-[#4A7C8C] text-sm rounded-lg font-medium">Needs Housing</span>
+                    <span class="px-3 py-1.5 bg-[#4A7C8C]/10 text-[#4A7C8C] text-sm rounded-lg font-medium">CDL Interest</span>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- CRISIS SCREEN -->
+    <div id="crisis-screen" class="chat-screen">
+        <div class="flex items-center justify-between p-4 border-b border-[#C4A962]/20 bg-[#B83232]/20">
+            <div class="flex items-center gap-3">
+                <button onclick="closeCrisis()" class="text-[#8B8680] hover:text-[#F5F3EF]">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-[#B83232] flex items-center justify-center">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5F3EF" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div>
+                    <h3 class="text-[#F5F3EF] font-medium">Crisis Support</h3>
+                    <p class="text-xs text-[#8B8680]">Immediate help</p>
+                </div>
+            </div>
+            <button onclick="closeCrisis()" class="text-[#8B8680] hover:text-[#F5F3EF]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+            <div class="card border-[#B83232]/30 bg-[#B83232]/10">
+                <h2 class="text-lg font-medium text-[#F5F3EF] mb-2 flex items-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B83232" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    You're not alone
+                </h2>
+                <p class="text-sm text-[#F5F3EF]/80 leading-relaxed mb-4">If you're in immediate danger, having thoughts of harming yourself, or in a crisis, please reach out right now. These services are free, confidential, and available 24/7.</p>
+            </div>
+            <div class="space-y-3">
+                <a href="tel:988" class="card block border-[#B83232]/30 hover:bg-[#B83232]/10 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#B83232]/20 flex items-center justify-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B83232" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-[#F5F3EF] font-medium">988 Suicide & Crisis Lifeline</h3>
+                            <p class="text-xs text-[#8B8680]">Call or text 988 · 24/7 · Free & Confidential</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="tel:911" class="card block border-[#B83232]/30 hover:bg-[#B83232]/10 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#B83232]/20 flex items-center justify-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B83232" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-[#F5F3EF] font-medium">Emergency Services</h3>
+                            <p class="text-xs text-[#8B8680]">Call 911 · Immediate response</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="tel:1-800-662-4357" class="card block border-[#C4A962]/20 hover:bg-[#C4A962]/10 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#C4A962]/10 flex items-center justify-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-[#F5F3EF] font-medium">SAMHSA National Helpline</h3>
+                            <p class="text-xs text-[#8B8680]">1-800-662-HELP (4357) · Substance abuse & mental health · 24/7</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="tel:1-800-799-7233" class="card block border-[#C4A962]/20 hover:bg-[#C4A962]/10 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#C4A962]/10 flex items-center justify-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-[#F5F3EF] font-medium">National Domestic Violence Hotline</h3>
+                            <p class="text-xs text-[#8B8680]">1-800-799-SAFE (7233) · 24/7 · Confidential</p>
+                        </div>
+                    </div>
+                </a>
+                <a href="tel:1-877-726-4727" class="card block border-[#C4A962]/20 hover:bg-[#C4A962]/10 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#C4A962]/10 flex items-center justify-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-[#F5F3EF] font-medium">Crisis Text Line</h3>
+                            <p class="text-xs text-[#8B8680]">Text HOME to 741741 · 24/7 · Free</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="card mt-4">
+                <p class="text-sm text-[#8B8680] leading-relaxed">Re-Entre is not a crisis service. If you need immediate help, please use one of the numbers above. After the crisis, Re-Entre will be here to help you find housing, services, and support for the long term.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- CHAT FAB -->
-    <button onclick="openChat()" class="fab" id="chat-fab">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <button onclick="openChat()" class="fab" id="chat-fab" aria-label="Open chat with Re-Entre">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </button>
 
     <!-- CHAT SCREEN -->
     <div id="chat-screen" class="chat-screen">
         <div class="flex items-center justify-between p-4 border-b border-[#C4A962]/20">
             <div class="flex items-center gap-3">
-                <button onclick="closeChat()" class="text-[#8B8680] hover:text-[#F5F3EF]">
+                <button onclick="closeChat()" class="text-[#8B8680] hover:text-[#F5F3EF] p-1">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
                 </button>
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#9B6B4F] to-[#4A7C8C] flex items-center justify-center">
@@ -360,27 +491,34 @@
                     <p class="text-xs text-[#8B8680]" id="chat-status">Online</p>
                 </div>
             </div>
-            <button onclick="closeChat()" class="text-[#8B8680] hover:text-[#F5F3EF]">
+            <button onclick="closeChat()" class="text-[#8B8680] hover:text-[#F5F3EF] p-1">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
         </div>
         <div class="flex-1 overflow-y-auto p-4 space-y-4" id="chat-messages"></div>
         <div class="p-4 border-t border-[#C4A962]/20">
-            <div class="flex flex-wrap gap-2 mb-3" id="chat-openers"></div>
+            <div class="flex flex-wrap gap-2 mb-3 overflow-x-auto pb-2" id="chat-openers"></div>
+            <div class="text-center">
+                <button onclick="openCrisis()" class="text-xs text-[#B83232] hover:text-[#d44848] font-medium">I need immediate help</button>
+            </div>
         </div>
     </div>
 
     <script>
     // ===== DATA =====
     const providers = [
-        { id: 1, name: "Project Return", location: "Nashville, TN", services: "Jobs, Housing, Training, Digital Literacy", description: "3-day Job Readiness Course → guaranteed employment. 12-month coaching. Nashville's oldest reentry org (est. 1979).", contact: "(615) 327-9654", email: "pri@projectreturninc.org", address: "109 Lafayette Street, Nashville", tags: ["Employment", "Housing", "Coaching", "Chattanooga"], verified: true },
-        { id: 2, name: "Men of Valor", location: "Nashville & Knoxville, TN", services: "Residential, Faith-Based, Discipleship, Job Readiness", description: "Christ-centered residential discipleship. 1-year program at 'The Ridge' in Antioch (~93 men) and Knoxville campus (~30 men).", contact: "men-of-valor.org", email: "", address: "504 Valor Way, Nashville", tags: ["Residential", "Faith-Based", "Long-Term", "Men"], verified: true },
-        { id: 3, name: "Tennessee Prison Outreach Ministry", location: "Nashville & Memphis, TN", services: "Transitional Housing, Job Placement, Counseling", description: "TDOC-approved transitional homes. 16-bed men's and 20-bed women's homes in Nashville. 10-bed men's facility in Memphis.", contact: "office@tpom.org", email: "office@tpom.org", address: "Nashville, TN", tags: ["Housing", "Job Placement", "Memphis", "Women"], verified: true },
-        { id: 4, name: "Free Hearts", location: "Statewide, TN", services: "Direct Services, Organizing, Legal Aid, Family Support", description: "Led by formerly incarcerated women. Participatory Defense Hub, Bail Fund, Clemency Works, Free Minds counseling, Inside Out programs.", contact: "(615) 745-1117", email: "", address: "2013 25th Ave N, Nashville", tags: ["Women", "Legal", "Family", "Advocacy"], verified: true },
-        { id: 5, name: "Thistle Farms / Magdalene", location: "Nashville, TN", services: "Residential, Addiction Recovery, Employment, Social Enterprise", description: "Two-year free residential program for women survivors of trafficking, prostitution, and addiction. Peer-led Benedictine community.", contact: "(615) 298-1140", email: "", address: "5122 Charlotte Pike, Nashville", tags: ["Women", "Residential", "Recovery", "Social Enterprise"], verified: true },
+        { id: 1, name: "Project Return", location: "Nashville, TN", services: "Jobs, Housing, Training, Digital Literacy", description: "3-day Job Readiness Course → guaranteed employment. 12-month coaching. Nashville's oldest reentry org (est. 1979).", contact: "(615) 327-9654", email: "pri@projectreturninc.org", address: "109 Lafayette Street, Nashville", tags: ["Employment", "Housing", "Coaching", "Chattanooga", "Featured"], verified: true },
+        { id: 2, name: "Men of Valor", location: "Nashville & Knoxville, TN", services: "Residential, Faith-Based, Discipleship, Job Readiness", description: "Christ-centered residential discipleship. 1-year program at 'The Ridge' in Antioch (~93 men) and Knoxville campus (~30 men).", contact: "men-of-valor.org", email: "", address: "504 Valor Way, Nashville", tags: ["Residential", "Faith-Based", "Long-Term", "Men", "Featured"], verified: true },
+        { id: 3, name: "Tennessee Prison Outreach Ministry", location: "Nashville & Memphis, TN", services: "Transitional Housing, Job Placement, Counseling", description: "TDOC-approved transitional homes. 16-bed men's and 20-bed women's homes in Nashville. 10-bed men's facility in Memphis.", contact: "office@tpom.org", email: "office@tpom.org", address: "Nashville, TN", tags: ["Housing", "Job Placement", "Memphis", "Women", "Featured"], verified: true },
+        { id: 4, name: "Free Hearts", location: "Statewide, TN", services: "Direct Services, Organizing, Legal Aid, Family Support", description: "Led by formerly incarcerated women. Participatory Defense Hub, Bail Fund, Clemency Works, Free Minds counseling, Inside Out programs.", contact: "(615) 745-1117", email: "", address: "2013 25th Ave N, Nashville", tags: ["Women", "Legal", "Family", "Advocacy", "Featured"], verified: true },
+        { id: 5, name: "Thistle Farms / Magdalene", location: "Nashville, TN", services: "Residential, Addiction Recovery, Employment, Social Enterprise", description: "Two-year free residential program for women survivors of trafficking, prostitution, and addiction. Peer-led Benedictine community.", contact: "(615) 298-1140", email: "", address: "5122 Charlotte Pike, Nashville", tags: ["Women", "Residential", "Recovery", "Social Enterprise", "Featured"], verified: true },
         { id: 6, name: "Persevere", location: "Memphis & Statewide, TN", services: "Coding, Certifications, Job Placement, Transitional Housing", description: "Behind-the-walls coding program. Network+, Security+, AWS Cloud, full-stack web dev certifications. 6-month on-the-job training.", contact: "perseverenow.org", email: "", address: "Memphis, TN", tags: ["Tech", "Education", "Certifications", "Employment"], verified: true },
         { id: 7, name: "Dismas House", location: "Nashville, TN", services: "Residential, Reentry, Community", description: "TDOC-approved residential reentry program. 56 beds for men. Minimum 90-day stay, no maximum. Holistic services.", contact: "dismas.org", email: "", address: "Nashville, TN", tags: ["Residential", "Men", "Community"], verified: true },
         { id: 8, name: "The Next Door", location: "Nashville, TN", services: "Residential, Addiction Recovery, Mental Health, Reentry", description: "Women's residential addiction recovery and reentry. Medication-assisted treatment and trauma-informed care.", contact: "thenextdoor.org", email: "", address: "Nashville, TN", tags: ["Women", "Recovery", "Mental Health", "Residential"], verified: true },
+        { id: 9, name: "Tennessee Higher Education Initiative (THEI)", location: "Statewide, TN", services: "College Programs, Degree Programs, Pre/Post-Release Support", description: "Coordinates degree-bearing higher education programs at 7 prison sites statewide. Tennessee Prison College Coalition convenor.", contact: "thei.org", email: "", address: "Statewide, TN", tags: ["Education", "College", "Featured"], verified: true },
+        { id: 10, name: "Lipscomb University LIFE Program", location: "Nashville, TN", services: "College Degrees, Seminary, Side-by-Side Instruction", description: "Associate's and Bachelor's degrees inside DJRC and Riverbend. First seminary program in a women's prison. Faith-based, side-by-side with traditional students.", contact: "lipscomb.edu/life", email: "", address: "Nashville, TN", tags: ["Education", "Women", "Faith-Based", "College"], verified: true },
+        { id: 11, name: "Just City / Clean Slate Fund", location: "Memphis, TN", services: "Expungement, Legal Aid, Record Clearing", description: "Pays expungement fees and navigates the process. Tennessee 2-1-1 directory listing. Clean Slate State Fund.", contact: "justcity.org", email: "", address: "Memphis, TN", tags: ["Legal", "Expungement", "Memphis"], verified: true },
+        { id: 12, name: "TN Office of Reentry (TOOR)", location: "Statewide, TN", services: "Job Centers, LEAP Program, Reentry Grants, Workforce", description: "State Office of Reentry under Dept of Labor. LEAP program goes inside facilities pre-release. Community Reentry Reinvestment Grants. American Job Centers.", contact: "tn.gov/workforce/reentrytn", email: "", address: "Statewide, TN", tags: ["Employment", "Government", "Statewide"], verified: true },
     ];
 
     const resources = [
@@ -396,28 +534,36 @@
         { id: 10, title: "Building Credit After Incarceration", category: "Finance", views: 723, icon: "card" },
         { id: 11, title: "Transportation Resources", category: "Transport", views: 312, icon: "truck" },
         { id: 12, title: "Mental Health & Peer Support", category: "Health", views: 889, icon: "heart" },
+        { id: 13, title: "SNAP & Food Assistance Guide", category: "Finance", views: 567, icon: "food" },
+        { id: 14, title: "Veterans Benefits & VA Services", category: "Veterans", views: 445, icon: "vet" },
+        { id: 15, title: "Occupational Licensing Reform", category: "Employment", views: 678, icon: "license" },
+        { id: 16, title: "Substance Abuse Treatment (MAT)", category: "Health", views: 789, icon: "med" },
     ];
 
     const chatOpeners = [
-        { id: 1, text: "I need help finding housing", icon: "home" },
-        { id: 2, text: "How do I get my ID?", icon: "file" },
-        { id: 3, text: "I'm feeling overwhelmed", icon: "heart" },
-        { id: 4, text: "What's the Pell Grant?", icon: "grad" },
-        { id: 5, text: "Find me a job", icon: "brief" },
-        { id: 6, text: "Help me reconnect with family", icon: "users" },
-        { id: 7, text: "I need a ride / transport", icon: "truck" },
-        { id: 8, text: "My rights at work", icon: "scale" },
+        { id: 1, text: "I need help finding housing", icon: "home", topic: "housing" },
+        { id: 2, text: "How do I get my ID?", icon: "file", topic: "id" },
+        { id: 3, text: "I'm feeling overwhelmed", icon: "heart", topic: "support" },
+        { id: 4, text: "What's the Pell Grant?", icon: "grad", topic: "education" },
+        { id: 5, text: "Find me a job", icon: "brief", topic: "job" },
+        { id: 6, text: "Help me reconnect with family", icon: "users", topic: "family" },
+        { id: 7, text: "I need a ride / transport", icon: "truck", topic: "transport" },
+        { id: 8, text: "My rights at work", icon: "scale", topic: "legal" },
+        { id: 9, text: "Mental health support", icon: "health", topic: "health" },
+        { id: 10, text: "Clearing my record", icon: "clear", topic: "legal" },
     ];
 
     const simulatedResponses = {
         "I need help finding housing": "I hear you. Housing is one of the hardest parts of coming home, but you're not alone in this. Let me pull up the housing options in your area. In Nashville, you've got Dismas House (56 beds, men), Tennessee Prison Outreach Ministry (16-bed men's home), and if you're a woman, Thistle Farms has a two-year residential program. What's your situation — are you looking for something tonight, or do you have a few days to plan?",
         "How do I get my ID?": "Getting your ID is step one, and I can walk you through it. In Tennessee, TDOC should provide at least 2 forms of ID at release — birth certificate and state ID. If you didn't get those, or if you need a Social Security card, here's what to do: First, go to the DMV with your release papers and birth certificate. If you don't have your birth certificate, we can request one from the state where you were born. Need me to look up the exact steps for your state?",
-        "I'm feeling overwhelmed": "I'm glad you said something. Coming home is overwhelming for almost everyone — it doesn't mean you're not strong enough. It means you're human. Can you tell me what's weighing heaviest right now? Is it housing, work, family, or something else? We can take it one piece at a time. You don't have to carry all of it at once.",
+        "I'm feeling overwhelmed": "I'm glad you said something. Coming home is overwhelming for almost everyone — it doesn't mean you're not strong enough. It means you're human. Can you tell me what's weighing heaviest right now? Is it housing, work, family, or something else? We can take it one piece at a time. You don't have to carry all of it at once. And if you need to talk to a human right now, I can connect you with Free Hearts or a crisis counselor.",
         "What's the Pell Grant?": "Good question — this could be a game-changer for you. Pell Grants for incarcerated students were fully restored in July 2023. That means if you're in a prison education program (PEP) or planning to enroll, you can get federal financial aid to cover tuition. In Tennessee, programs like THEI, Lipscomb LIFE, and Persevere all work with Pell. The amount varies, but it can cover a big chunk of costs. Are you interested in college, trade certification, or coding?",
         "Find me a job": "Let's get you connected. In Tennessee, Project Return runs a 3-day Job Readiness Course that leads to guaranteed employment — they've placed over 1,500 people. Men of Valor has job readiness built into their program. Persevere offers coding certifications with job placement through Banyan Labs. And the state has American Job Centers that serve justice-involved individuals. What's your background — construction, tech, hospitality, or something else?",
         "Help me reconnect with family": "That's brave of you to want to reconnect. Family repair takes time, but it starts with one honest step. Free Hearts in Nashville specializes in family reunification and has programs for incarcerated parents. Sesame Street in Communities has a toolkit for incarcerated parents too. What's your situation — are you trying to reach kids, a partner, parents? I can point you to the right resources.",
         "I need a ride / transport": "Transport is a real barrier. Project Return has a van fleet for getting to work. Some transit systems offer reduced fares. And in some areas, rideshare voucher programs exist. Where are you trying to get to — work, appointments, housing, family? I can find what's available in your area.",
         "My rights at work": "You have rights, and knowing them matters. The Fair Chance Act means federal employers and contractors can't ask about your record until after a conditional offer. Tennessee's Reentry Success Act of 2021 includes an employer liability shield — that means employers get protection when they hire people with records. You also qualify for the Work Opportunity Tax Credit (up to $9,600 for your employer). Are you dealing with a specific situation at work, or just getting informed?",
+        "Mental health support": "Taking care of your mental health is just as important as everything else. In Tennessee, you can get connected to Certified Peer Recovery Specialists through the Department of Mental Health. The Phoenix offers free sober community fitness. Lionheart Foundation has emotional literacy programs. If you're dealing with substance use, Medication-Assisted Treatment (MAT) is available. Would you like help finding a therapist, peer support group, or treatment program near you?",
+        "Clearing my record": "That's a big step toward rebuilding your life. In Tennessee, T.C.A. §40-32-101 covers expungement for dismissed/nollied charges and some convictions after 5+ years. Just City in Memphis runs the Clean Slate State Fund that pays expungement fees. The Legal Aid Society of Middle Tennessee also helps with this. The process is different depending on what charges you have. Want me to walk you through the basics?",
     };
 
     let currentFilter = 'All';
@@ -430,19 +576,20 @@
         document.getElementById('screen-' + screen).classList.add('active');
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         event.currentTarget.classList.add('active');
+        window.scrollTo(0, 0);
     }
 
     // ===== PROVIDERS =====
     function renderProviders(list) {
         const container = document.getElementById('provider-list');
         container.innerHTML = list.map(p => `
-            <div class="card">
+            <div class="card resource-card">
                 <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#9B6B4F] to-[#4A7C8C] flex items-center justify-center text-[#F5F3EF] font-light text-sm">${p.name.split(' ').map(w => w[0]).join('').substring(0, 2)}</div>
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#9B6B4F] to-[#4A7C8C] flex items-center justify-center text-[#F5F3EF] font-light text-sm flex-shrink-0">${p.name.split(' ').map(w => w[0]).join('').substring(0, 2)}</div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1">
                             <h3 class="text-sm font-medium text-[#F5F3EF] truncate">${p.name}</h3>
-                            ${p.verified ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
+                            ${p.verified ? '<svg class="flex-shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' : ''}
                         </div>
                         <p class="text-xs text-[#8B8680] mb-1">${p.services}</p>
                         <div class="flex items-center gap-1 text-xs text-[#8B8680]">
@@ -453,7 +600,7 @@
                 </div>
                 <p class="text-xs text-[#8B8680] mt-3 leading-relaxed">${p.description}</p>
                 <div class="flex flex-wrap gap-2 mt-3">
-                    ${p.tags.map(t => `<span class="px-2 py-1 bg-[#C4A962]/10 text-[#C4A962] text-xs rounded-md">${t}</span>`).join('')}
+                    ${p.tags.map(t => t !== 'Featured' ? `<span class="px-2 py-1 bg-[#C4A962]/10 text-[#C4A962] text-xs rounded-md">${t}</span>` : '').join('')}
                 </div>
                 <div class="flex items-center justify-between mt-3 pt-3 border-t border-[#C4A962]/10">
                     <span class="text-xs text-[#8B8680] flex items-center gap-1">
@@ -463,12 +610,29 @@
                 </div>
             </div>
         `).join('');
+        document.getElementById('provider-count').textContent = `${list.length} reentry organizations in Tennessee`;
+    }
+
+    function renderFeaturedProviders() {
+        const container = document.getElementById('featured-providers');
+        const featured = providers.filter(p => p.tags.includes('Featured'));
+        container.innerHTML = featured.map(p => `
+            <div class="card resource-card">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#9B6B4F] to-[#4A7C8C] flex items-center justify-center text-[#F5F3EF] text-xs font-light">${p.name.split(' ').map(w => w[0]).join('').substring(0, 2)}</div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-sm font-medium text-[#F5F3EF] truncate">${p.name}</h3>
+                        <p class="text-xs text-[#8B8680]">${p.services.split(',').slice(0, 2).join(' · ')}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
     }
 
     function filterProviders() {
         const search = document.getElementById('provider-search').value.toLowerCase();
         const filtered = providers.filter(p => {
-            const matchesSearch = p.name.toLowerCase().includes(search) || p.services.toLowerCase().includes(search);
+            const matchesSearch = p.name.toLowerCase().includes(search) || p.services.toLowerCase().includes(search) || p.location.toLowerCase().includes(search);
             const matchesTag = currentFilter === 'All' || p.tags.includes(currentFilter);
             return matchesSearch && matchesTag;
         });
@@ -479,7 +643,7 @@
         currentFilter = tag;
         document.querySelectorAll('#provider-filters button').forEach(b => {
             if (b.textContent === tag) {
-                b.className = 'px-4 py-2 rounded-full text-sm bg-[#C4A962] text-[#0D0D0D]';
+                b.className = 'px-4 py-2 rounded-full text-sm bg-[#C4A962] text-[#0D0D0D] font-medium';
             } else {
                 b.className = 'px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]';
             }
@@ -502,14 +666,19 @@
             book: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
             card: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>',
             truck: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+            food: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>',
+            vet: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+            license: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
+            med: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+            clear: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
         };
         container.innerHTML = list.map(r => `
-            <div class="card hover:border-[#C4A962]/40 cursor-pointer">
+            <div class="card resource-card">
                 <div class="flex items-start gap-4">
-                    <div class="w-12 h-12 rounded-full bg-[#C4A962]/10 flex items-center justify-center">${icons[r.icon] || icons.file}</div>
+                    <div class="w-12 h-12 rounded-full bg-[#C4A962]/10 flex items-center justify-center flex-shrink-0">${icons[r.icon] || icons.file}</div>
                     <div class="flex-1">
-                        <h3 class="text-[#F5F3EF] font-medium mb-1 group-hover:text-[#C4A962]">${r.title}</h3>
-                        <p class="text-xs text-[#8B8680] mb-1">Re-Entre Guide · ${r.category}</p>
+                        <h3 class="text-[#F5F3EF] font-medium mb-1 text-sm">${r.title}</h3>
+                        <p class="text-xs text-[#8B8680] mb-1">${r.category}</p>
                         <p class="text-xs text-[#8B8680] flex items-center gap-1">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                             ${r.views} views
@@ -532,9 +701,10 @@
 
     function filterResourceByCategory(cat) {
         currentResourceFilter = cat;
+        const catMap = { 'All': 'All', 'IDs & Documents': 'IDs', 'Housing': 'Housing', 'Employment': 'Jobs', 'Education': 'Education', 'Health': 'Health', 'Legal': 'Legal', 'Family': 'Family', 'Finance': 'Finance', 'Veterans': 'Veterans' };
         document.querySelectorAll('#screen-resources .flex-wrap button').forEach(b => {
-            if (b.textContent === (cat === 'All' ? 'All' : cat === 'IDs & Documents' ? 'IDs' : cat)) {
-                b.className = 'px-4 py-2 rounded-full text-sm bg-[#C4A962] text-[#0D0D0D]';
+            if (b.textContent === catMap[cat]) {
+                b.className = 'px-4 py-2 rounded-full text-sm bg-[#C4A962] text-[#0D0D0D] font-medium';
             } else {
                 b.className = 'px-4 py-2 rounded-full text-sm bg-[#1A1A1A] text-[#8B8680] border border-[#C4A962]/20 hover:text-[#F5F3EF]';
             }
@@ -543,12 +713,16 @@
     }
 
     // ===== CHAT =====
-    function openChat() {
+    function openChat(topic) {
         document.getElementById('chat-screen').classList.add('active');
         document.getElementById('chat-fab').classList.add('hidden');
         if (document.getElementById('chat-messages').children.length === 0) {
             addMessage("Hey Marcus. I'm Re-Entre. I'm here to help you navigate — housing, jobs, IDs, family, whatever's on your mind. What's going on today?", 'bot');
-            renderOpeners();
+        }
+        renderOpeners();
+        if (topic) {
+            const opener = chatOpeners.find(o => o.topic === topic);
+            if (opener) handleOpener(opener.text);
         }
     }
 
@@ -560,7 +734,7 @@
     function addMessage(text, sender) {
         const container = document.getElementById('chat-messages');
         const div = document.createElement('div');
-        div.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+        div.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} fade-in`;
         div.innerHTML = `<div class="${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-bot'}"><p class="text-sm leading-relaxed">${text}</p></div>`;
         container.appendChild(div);
         container.scrollTop = container.scrollHeight;
@@ -577,6 +751,8 @@
             users: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>',
             truck: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
             scale: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+            health: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+            clear: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
         };
         container.innerHTML = chatOpeners.map(o => `
             <button class="opener-btn" onclick="handleOpener('${o.text.replace(/'/g, "\'")}')" ${isTyping ? 'disabled' : ''}>
@@ -593,7 +769,6 @@
         document.getElementById('chat-status').textContent = 'Typing...';
         renderOpeners();
 
-        // Show typing indicator
         const container = document.getElementById('chat-messages');
         const typingDiv = document.createElement('div');
         typingDiv.className = 'flex justify-start';
@@ -612,8 +787,20 @@
         }, 1500);
     }
 
+    // ===== CRISIS =====
+    function openCrisis() {
+        document.getElementById('crisis-screen').classList.add('active');
+        document.getElementById('chat-fab').classList.add('hidden');
+    }
+
+    function closeCrisis() {
+        document.getElementById('crisis-screen').classList.remove('active');
+        document.getElementById('chat-fab').classList.remove('hidden');
+    }
+
     // ===== INIT =====
     renderProviders(providers);
+    renderFeaturedProviders();
     renderResources(resources);
     </script>
 </body>
