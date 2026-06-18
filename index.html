@@ -157,6 +157,48 @@
                 </div>
             </div>
             <div class="mt-8">
+                <div class="card border-[#C4A962]/30">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full bg-[#C4A962]/10 flex items-center justify-center gold">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-[#F5F3EF] font-medium mb-1">Getting Out Soon?</h3>
+                            <p class="text-sm text-[#8B8680] mb-3">Pre-release planning checklist: IDs, housing, job leads, support network. Start now so you're ready.</p>
+                            <button onclick="openChat('prerelease')" class="text-sm text-[#C4A962] hover:text-[#D4B972] font-medium flex items-center gap-1">
+                                Start Planning →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-light text-[#F5F3EF]">Community Voices</h2>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#9B6B4F] to-[#4A7C8C] flex items-center justify-center text-[#F5F3EF] text-sm font-light">J</div>
+                            <div>
+                                <p class="text-sm text-[#F5F3EF] italic mb-2">"Project Return got me my first job in 15 years. Three days of training, and I had a paycheck. Now I'm a supervisor."</p>
+                                <p class="text-xs text-[#8B8680]">— James, 2 years home</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#9B6B4F] to-[#4A7C8C] flex items-center justify-center text-[#F5F3EF] text-sm font-light">T</div>
+                            <div>
+                                <p class="text-sm text-[#F5F3EF] italic mb-2">"Thistle Farms didn't just give me a bed. They gave me sisters, a job, and a reason to believe I could be something again."</p>
+                                <p class="text-xs text-[#8B8680]">— Tasha, 18 months home</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-light text-[#F5F3EF]">Featured Community</h2>
                     <button onclick="navigate('community')" class="text-sm text-[#C4A962] hover:text-[#D4B972]">View All →</button>
@@ -581,6 +623,9 @@
         { id: 13, text: "I need help with addiction or recovery", icon: "health", topic: "recovery" },
         { id: 14, text: "Legal aid or expungement help", icon: "scale", topic: "legal" },
         { id: 15, text: "Family and parenting rights", icon: "users", topic: "family" },
+        { id: 16, text: "I'm getting out soon — what do I need?", icon: "file", topic: "prerelease" },
+        { id: 17, text: "First 72 hours — help me plan", icon: "home", topic: "first72" },
+        { id: 18, text: "How do I get Medicaid or health insurance?", icon: "health", topic: "health" },
 ];
 
     const simulatedResponses = {
@@ -599,6 +644,9 @@
         "I need help with addiction or recovery": "You're taking the right step by asking for help. In Tennessee, Medication-Assisted Treatment (MAT) is available for opioid and alcohol use disorders — that includes medications like buprenorphine, methadone, and naltrexone combined with counseling. The Department of Mental Health has Certified Peer Recovery Specialists who've been through it themselves. Turning Point in Nashville has reentry-specific recovery programs. The Phoenix offers free sober community fitness — all you need is 48 hours of sobriety. Oxford Houses are self-run sober living homes across the state. Would you like help finding a specific program near you, or do you want to talk about what to expect?",
         "Legal aid or expungement help": "You have rights, and there are people who will fight for you for free. The Legal Aid Society of Middle Tennessee serves 48 counties and helps with expungement, civil rights restoration, housing disputes, and employment discrimination. Just City in Memphis pays expungement fees through their Clean Slate Fund. In Tennessee, T.C.A. §40-32-101 covers expungement for dismissed charges and some convictions after 5+ years. Free Hearts also helps with legal navigation. The process takes time but it's worth it. Do you know what charges you're trying to clear, or do you need help figuring out what's eligible?",
         "Family and parenting rights": "Family is often the hardest part of coming home — and the most important. You have rights as a parent, even if you were incarcerated. Free Hearts specializes in family reunification and has programs for incarcerated parents. Sesame Street in Communities has a toolkit specifically for incarcerated parents. If you owe child support, the state may have programs to help modify payments while you get back on your feet. Legal Aid can help with custody and visitation issues. Reconnecting with family takes patience and honesty, but it's absolutely possible. What's your situation — are you trying to see kids, reconnect with a partner, or deal with child support?",
+        "I'm getting out soon — what do I need?": "This is exactly the right time to start planning. The more you do before release, the smoother your first days will be. Here's your priority list: 1) Make sure TDOC is giving you at least 2 forms of ID (birth certificate + state ID). 2) Have a housing plan — even if it's just a temporary bed. Call Dismas House, TPOM, or Project Return NOW to reserve a spot. 3) Set up a phone number (Google Voice is free). 4) Apply for Medicaid before release (TennCare). 5) Have a ride lined up for release day. 6) Know your first appointment dates — PO, MAT clinic, job center. Want me to walk you through any of these in detail?",
+        "First 72 hours — help me plan": "The first 72 hours are critical. Here's what matters most: DAY 1 — Get to your housing. Eat. Sleep. Check in with your PO if required. Make your first MAT appointment if you need it. DAY 2 — Go to the Social Security office or apply online. Get a phone. Apply for food stamps (SNAP). Visit an American Job Center. DAY 3 — Start your job search. Follow up on housing. Connect with a peer support group. If you don't have a bed yet, call 2-1-1 or go straight to a shelter. Don't try to do everything alone. Want me to help you build a specific day-by-day plan?",
+        "How do I get Medicaid or health insurance?": "In Tennessee, you can apply for TennCare (Medicaid) online at TennCare Connect or in person. If you have a disability, SSI, or are low-income, you likely qualify. For people with substance use disorders, TennCare covers Medication-Assisted Treatment (MAT) — buprenorphine, methadone, naltrexone. You can also apply for ACA marketplace coverage, and if your income is low, you get subsidies. The key is applying BEFORE you need care, not after. Do you have any current health conditions, or are you mainly looking for coverage in case something comes up?",
 };
 
     let currentFilter = 'All';
