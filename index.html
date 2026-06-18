@@ -518,6 +518,16 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card mb-6">
+                <h2 class="text-lg font-medium text-[#F5F3EF] mb-4 flex items-center gap-2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    Saved for Later
+                </h2>
+                <div id="saved-items" class="space-y-3">
+                    <p class="text-sm text-[#8B8680]">No saved items yet. Browse Community and Resources to save items here.</p>
+                </div>
+            </div>
             <div class="card">
                 <h2 class="text-lg font-medium text-[#F5F3EF] mb-4 flex items-center gap-2">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C4A962" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
@@ -1001,6 +1011,79 @@
 
 
 
+
+
+    function renderSavedItems() {
+        const container = document.getElementById('saved-items');
+        if (!container) return;
+        const savedProviderIds = JSON.parse(localStorage.getItem('savedProviders') || '[]');
+        const savedResourceIds = JSON.parse(localStorage.getItem('savedResources') || '[]');
+        const savedProviders = providers.filter(p => savedProviderIds.includes(p.id));
+        const savedResources = resources.filter(r => savedResourceIds.includes(r.id));
+
+        if (savedProviders.length === 0 && savedResources.length === 0) {
+            container.innerHTML = '<p class="text-sm text-[#8B8680]">No saved items yet. Browse Community and Resources to save items here.</p>';
+            return;
+        }
+
+        let html = '';
+        if (savedProviders.length > 0) {
+            html += '<div class="mb-3"><p class="text-xs text-[#8B8680] mb-2 uppercase tracking-wide">Organizations</p>';
+            savedProviders.forEach(p => {
+                html += `<div class="flex items-center justify-between p-2 bg-[#0D0D0D] rounded-lg mb-2"><span class="text-sm text-[#F5F3EF]">${p.name}</span><button onclick="saveProvider(${p.id}); renderSavedItems();" class="text-xs text-[#8B8680] hover:text-[#C4A962]">Remove</button></div>`;
+            });
+            html += '</div>';
+        }
+        if (savedResources.length > 0) {
+            html += '<div><p class="text-xs text-[#8B8680] mb-2 uppercase tracking-wide">Resources</p>';
+            savedResources.forEach(r => {
+                html += `<div class="flex items-center justify-between p-2 bg-[#0D0D0D] rounded-lg mb-2"><span class="text-sm text-[#F5F3EF]">${r.title}</span><button onclick="saveResource(${r.id}); renderSavedItems();" class="text-xs text-[#8B8680] hover:text-[#C4A962]">Remove</button></div>`;
+            });
+            html += '</div>';
+        }
+        container.innerHTML = html;
+    }
+    function saveProvider(id) {
+        let saved = JSON.parse(localStorage.getItem('savedProviders') || '[]');
+        if (saved.includes(id)) {
+            saved = saved.filter(sid => sid !== id);
+            alert('Removed from saved');
+        } else {
+            saved.push(id);
+            alert('Saved for later');
+        }
+        localStorage.setItem('savedProviders', JSON.stringify(saved));
+    }
+
+    function shareProvider(name, contact) {
+        const text = `Check out ${name} - ${contact}`;
+        if (navigator.share) {
+            navigator.share({ title: name, text: text });
+        } else {
+            navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard'));
+        }
+    }
+
+    function saveResource(id) {
+        let saved = JSON.parse(localStorage.getItem('savedResources') || '[]');
+        if (saved.includes(id)) {
+            saved = saved.filter(sid => sid !== id);
+            alert('Removed from saved');
+        } else {
+            saved.push(id);
+            alert('Saved for later');
+        }
+        localStorage.setItem('savedResources', JSON.stringify(saved));
+    }
+
+    function shareResource(title) {
+        const text = `Check out: ${title}`;
+        if (navigator.share) {
+            navigator.share({ title: title, text: text });
+        } else {
+            navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard'));
+        }
+    }
     function toggleRights(card) {
         const content = card.querySelector('.rights-content');
         const chevron = card.querySelector('.rights-chevron');
@@ -1031,6 +1114,7 @@
         }
     }
     // ===== INIT =====
+    renderSavedItems();
     renderProviders(providers);
     renderFeaturedProviders();
     renderResources(resources);
